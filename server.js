@@ -2,6 +2,7 @@ const express = require('express');
 const mysql = require('mysql');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 const port = 5000;
@@ -10,11 +11,12 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Database connection
-const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'chatbot',
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT || 3306
 });
 
 db.connect((err) => {
@@ -63,3 +65,5 @@ app.get('/api/messages', (req, res) => {
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
+
+module.exports = pool.promise();
