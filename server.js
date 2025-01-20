@@ -10,6 +10,14 @@ const PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(cors());
 
+app.get('/', (req, res) => {
+    res.send("backend is running!");
+});
+
+db.connect((err) => {
+    console.log('Connected to database');
+});
+
 // Endpoint to send and save messages
 app.post('/api/messages', (req, res) => {
     const { user_message } = req.body;
